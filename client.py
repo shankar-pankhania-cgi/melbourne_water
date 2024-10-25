@@ -10,7 +10,7 @@ API_URL = "http://127.0.0.1:8000/answer"
 # Load logos (replace these with your actual image paths)
 left_logo_path = "Melbourne-Water-Logo-RGB.png"  # Path to the first logo image
 right_logo_path = "CGI_logo.svg.png"  # Path to the second logo image
-submit_logo_path = "up-arrow-icon-png-image_992007.jpg"  # Path to the third logo image
+submit_logo_path = "BtnSubmit.png"  # Path to the third logo image
 
 # Convert images to base64 so they can be displayed with HTML in Streamlit
 def get_image_base64(image_path):
@@ -140,27 +140,13 @@ st.markdown(
             float: left;
         }}
         
-        /* Input styling */
-        .input-container input {{
-            background-color: #003a8c; /* Same blue as title box */
-            color: white; /* Text color */
-            border: none; /* Remove border */
-            border-radius: 15px; /* Rounded corners */
-            padding: 15px; /* Padding for the input */
-            font-size: 18px; /* Font size */
-            width: 100%; /* Full width */
-             position: fixed;
-  bottom: 0;
-  right: 0;
+        .submit-logo {{
+            margin-top: 40px;
+            float: right;
         }}
-         .submit-logo {{
-            position: absolute;
-            right: 10px;  /* Adjust according to your design */
-            top: 50%;  /* Center the logo vertically */
-            transform: translateY(-50%);
-            cursor: pointer;  /* Change cursor to pointer */
-            width: 25px;  /* Adjust size as needed */
-            height: auto;  /* Maintain aspect ratio */
+
+        .stTextInput {{
+            width:100%;
         }}
         
         /* Footer styling */
@@ -224,23 +210,21 @@ if st.session_state.conversation:
         st.markdown(f'<div class="question-box">{item["question"]}</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="answer-box">{item["answer"]}</div>', unsafe_allow_html=True)
 
-# Input for new questions
-st.markdown('<div class="input-container">', unsafe_allow_html=True)
-st.text_input(
-    "Question",  # Provide a meaningful label here
-    key="question_input",
-    on_change=handle_question_input,
-    placeholder="Enter Question...",
-    label_visibility="hidden",  # Hide the label for aesthetics
-)
 
-st.markdown('</div>', unsafe_allow_html=True)
-
-# Display the submit logo
-st.markdown(
-    f'<img src="data:image/png;base64,{submit_logo_base64}" class="submit-logo" onclick="document.getElementById(\'question_input\').dispatchEvent(new Event(\'change\'));">',
-    unsafe_allow_html=True
-)
+col1, col2 = st.columns([0.96,0.04])
+with col1:
+    st.text_input(
+        "Question",  # Provide a meaningful label here
+        key="question_input",
+        on_change=handle_question_input,
+        placeholder="Enter Question...",
+        label_visibility="hidden",  # Hide the label for aesthetics
+    )
+with col2:
+    st.markdown(
+        f'<img src="data:image/png;base64,{submit_logo_base64}" class="submit-logo" onclick="document.getElementById(\'question_input\').dispatchEvent(new Event(\'change\'));">',
+        unsafe_allow_html=True
+    )
 
 # Footer and branding
 st.markdown(
